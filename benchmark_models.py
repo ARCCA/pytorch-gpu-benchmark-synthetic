@@ -17,16 +17,23 @@ torch.backends.cudnn.benchmark = True
 # This flag allows you to enable the inbuilt cudnn auto-tuner to find the best algorithm to use for your hardware.
 # If you check it using the profile tool, the cnn method such as winograd, fft, etc. is used for the first iteration and the best operation is selected for the device.
 
+model_names = sorted(name for name in models.__dict__
+                     if name.islower() and not name.startswith("__")
+                     and callable(models.__dict__[name]))
 
 MODEL_LIST = {
-    models.mnasnet: models.mnasnet.__all__[1:],
-    models.resnet: models.resnet.__all__[1:],
-    models.densenet: models.densenet.__all__[1:],
-    models.squeezenet: models.squeezenet.__all__[1:],
-    models.vgg: models.vgg.__all__[1:],
-    models.mobilenet: models.mobilenet.mv2_all[1:],
-    models.mobilenet: models.mobilenet.mv3_all[1:],
-    models.shufflenetv2: models.shufflenetv2.__all__[1:],
+    models.resnet: [ name for name in model_names if 'resnet' in name or 'resnext' in name and 'resnext101_64x4d' not in name],
+    models.densenet: [ name for name in model_names if 'densenet' in name],
+    models.squeezenet: [ name for name in model_names if 'squeezenet' in name],
+    models.vgg: [ name for name in model_names if 'vgg' in name],
+    #models.mnasnet: models.mnasnet.__all__[1:],
+    #models.resnet: models.resnet.__all__[1:],
+    #models.densenet: models.densenet.__all__[1:],
+    #models.squeezenet: models.squeezenet.__all__[1:],
+    #models.vgg: models.vgg.__all__[1:],
+    #models.mobilenet: models.mobilenet.mv2_all[1:],
+    #models.mobilenet: models.mobilenet.mv3_all[1:],
+    #models.shufflenetv2: models.shufflenetv2.__all__[1:],
 }
 
 precisions = ["float", "half", "double"]
